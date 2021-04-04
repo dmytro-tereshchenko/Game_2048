@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:Game_2048"
         mc:Ignorable="d"
         Title="2048" Height="450" Width="400"
+        MinHeight="350" MinWidth="300"
         Background="Beige">
     <Window.Resources>
         <Style x:Key="ScoreBorder" TargetType="{x:Type Border}">
