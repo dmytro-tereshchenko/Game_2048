@@ -43,7 +43,8 @@ namespace Game_2048.Models
                 XAttribute highScoreAttribute = scoreElement.Attribute(HighScoreFile.Root.Score.Attributes.HighScore);
                 int hightScore = int.Parse(highScoreAttribute.Value);
             }
-            throw new FileNotFoundException($"Not found file {HighScoreFile.Path}");
+            else throw new FileNotFoundException($"Not found file {HighScoreFile.Path}");
+            return 0;
         }
         private void SaveHighScore(int highScore)
         {

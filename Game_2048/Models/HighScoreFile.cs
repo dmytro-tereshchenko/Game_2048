@@ -8,7 +8,7 @@ namespace Game_2048.Models
 {
     internal static class HighScoreFile
     {
-        public const string Path = @"..\..\HighScoreFile.xml";
+        public const string Path = @"..\..\HighScore.xml";
 
         public static class Root
         {

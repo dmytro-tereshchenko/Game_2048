@@ -52,7 +52,7 @@ namespace Game_2048.Models
             }
             scores.Score = 0;
         }
-        private int GetCell(int row, int col) => field[row * rows + col * cols];
+        public int GetCell(int row, int col) => field[row * rows + col * cols];
         public bool MoveLeft()
         {
             bool canExecute = false;

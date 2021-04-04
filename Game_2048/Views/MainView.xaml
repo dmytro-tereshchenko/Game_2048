@@ -31,7 +31,7 @@
                         <Border BorderBrush="{TemplateBinding BorderBrush}" 
                 BorderThickness="{TemplateBinding BorderThickness}" 
                 Background="{TemplateBinding Background}" 
-                Padding="{TemplateBinding Padding}" 
+                Padding="{TemplateBinding Padding}"
                 SnapsToDevicePixels="true" 
                 CornerRadius="5">
                             <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
@@ -60,13 +60,13 @@
             <Border Grid.Column="0" Style="{StaticResource ScoreBorder}">
                 <StackPanel>
                     <TextBlock Text="Score" Style="{StaticResource TextScore}"/>
-                    <TextBlock Text="Score" Style="{StaticResource NumberScore}"/>
+                    <TextBlock Text="{Binding Score}" Style="{StaticResource NumberScore}"/>
                 </StackPanel>
             </Border>
             <Border Grid.Column="1" Style="{StaticResource ScoreBorder}">
                 <StackPanel>
                     <TextBlock Text="High Score" Style="{StaticResource TextScore}"/>
-                    <TextBlock Text="High Score" Style="{StaticResource NumberScore}"/>
+                    <TextBlock Text="{Binding HighScore}" Style="{StaticResource NumberScore}"/>
                 </StackPanel>
             </Border>
         </Grid>
@@ -84,22 +84,22 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Label Grid.Row="0" Grid.Column="0" Content="6" Style="{StaticResource BarLaybel}"/>
-                <Label Grid.Row="0" Grid.Column="1" Content="6" Style="{StaticResource BarLaybel}"/>
-                <Label Grid.Row="0" Grid.Column="2" Content="6" Style="{StaticResource BarLaybel}"/>
-                <Label Grid.Row="0" Grid.Column="3" Content="6" Style="{StaticResource BarLaybel}"/>
-                <Label Grid.Row="1" Grid.Column="0" Content="6" Style="{StaticResource BarLaybel}"/>
-                <Label Grid.Row="1" Grid.Column="1" Content="6" Style="{StaticResource BarLaybel}"/>
-                <Label Grid.Row="1" Grid.Column="2" Content="6" Style="{StaticResource BarLaybel}"/>
-                <Label Grid.Row="1" Grid.Column="3" Content="6" Style="{StaticResource BarLaybel}"/>
-                <Label Grid.Row="2" Grid.Column="0" Content="6" Style="{StaticResource BarLaybel}"/>
-                <Label Grid.Row="2" Grid.Column="1" Content="6" Style="{StaticResource BarLaybel}"/>
-                <Label Grid.Row="2" Grid.Column="2" Content="6" Style="{StaticResource BarLaybel}"/>
-                <Label Grid.Row="2" Grid.Column="3" Content="6" Style="{StaticResource BarLaybel}"/>
-                <Label Grid.Row="3" Grid.Column="0" Content="6" Style="{StaticResource BarLaybel}"/>
-                <Label Grid.Row="3" Grid.Column="1" Content="6" Style="{StaticResource BarLaybel}"/>
-                <Label Grid.Row="3" Grid.Column="2" Content="6" Style="{StaticResource BarLaybel}"/>
-                <Label Grid.Row="3" Grid.Column="3" Content="6" Style="{StaticResource BarLaybel}"/>
+                <Label Grid.Row="0" Grid.Column="0" Content="{Binding Bar[0]}" Style="{StaticResource BarLaybel}"/>
+                <Label Grid.Row="0" Grid.Column="1" Content="{Binding Bar[1]}" Style="{StaticResource BarLaybel}"/>
+                <Label Grid.Row="0" Grid.Column="2" Content="{Binding Bar[2]}" Style="{StaticResource BarLaybel}"/>
+                <Label Grid.Row="0" Grid.Column="3" Content="{Binding Bar[3]}" Style="{StaticResource BarLaybel}"/>
+                <Label Grid.Row="1" Grid.Column="0" Content="{Binding Bar[4]}" Style="{StaticResource BarLaybel}"/>
+                <Label Grid.Row="1" Grid.Column="1" Content="{Binding Bar[5]}" Style="{StaticResource BarLaybel}"/>
+                <Label Grid.Row="1" Grid.Column="2" Content="{Binding Bar[6]}" Style="{StaticResource BarLaybel}"/>
+                <Label Grid.Row="1" Grid.Column="3" Content="{Binding Bar[7]}" Style="{StaticResource BarLaybel}"/>
+                <Label Grid.Row="2" Grid.Column="0" Content="{Binding Bar[8]}" Style="{StaticResource BarLaybel}"/>
+                <Label Grid.Row="2" Grid.Column="1" Content="{Binding Bar[9]}" Style="{StaticResource BarLaybel}"/>
+                <Label Grid.Row="2" Grid.Column="2" Content="{Binding Bar[10]}" Style="{StaticResource BarLaybel}"/>
+                <Label Grid.Row="2" Grid.Column="3" Content="{Binding Bar[11]}" Style="{StaticResource BarLaybel}"/>
+                <Label Grid.Row="3" Grid.Column="0" Content="{Binding Bar[12]}" Style="{StaticResource BarLaybel}"/>
+                <Label Grid.Row="3" Grid.Column="1" Content="{Binding Bar[13]}" Style="{StaticResource BarLaybel}"/>
+                <Label Grid.Row="3" Grid.Column="2" Content="{Binding Bar[14]}" Style="{StaticResource BarLaybel}"/>
+                <Label Grid.Row="3" Grid.Column="3" Content="{Binding Bar[15]}" Style="{StaticResource BarLaybel}"/>
             </Grid>
         </Border>
     </DockPanel>

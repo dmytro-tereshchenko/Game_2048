@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Game_2048.Models;
+using Game_2048.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +25,9 @@ namespace Game_2048.Views
         public MainView()
         {
             InitializeComponent();
+            GameScoreManager manager = new GameScoreManager();
+            GameField field = new GameField(manager, 4, 4);
+            this.DataContext = new MainViewModel(field, manager);
         }
     }
 }
