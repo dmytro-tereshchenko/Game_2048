@@ -55,7 +55,7 @@ namespace Game_2048.Models
             }
             scores.Score = 0;
         }
-        private int GetCell(int row, int col) => field[row * rows + col * cols];
+        public int GetCell(int row, int col) => field[row * rows + col * cols];
         private void SetCell(int row, int col, int value) => field[row * rows + col * cols] = value;
         private void GenerateNewBlock()
         {
