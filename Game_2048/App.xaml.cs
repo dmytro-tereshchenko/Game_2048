@@ -1,4 +1,5 @@
 ﻿using Game_2048.Models;
+using Game_2048.ViewModels;
 using Game_2048.Views;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,8 @@ namespace Game_2048
 
             var gameScoreManager = new GameScoreManager();
             var gameField = new GameField(gameScoreManager, 4, 4);
-            var view = new MainView();
+            MainViewModel viewModel = new MainViewModel(gameField, gameScoreManager);
+            var view = new MainView(viewModel);
             view.Show();
         }
     }

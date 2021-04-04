@@ -20,14 +20,12 @@ namespace Game_2048.Views
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainView : Window
+    internal partial class MainView : Window
     {
-        public MainView()
+        public MainView(MainViewModel viewModel)
         {
             InitializeComponent();
-            GameScoreManager manager = new GameScoreManager();
-            GameField field = new GameField(manager, 4, 4);
-            this.DataContext = new MainViewModel(field, manager);
+            this.DataContext = viewModel;
         }
     }
 }

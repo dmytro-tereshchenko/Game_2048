@@ -32,6 +32,7 @@ namespace Game_2048.Models
 
         private int LoadHighScore()
         {
+            int hightScore = 0;
             if (File.Exists(HighScoreFile.Path))
             {
                 XDocument document = XDocument.Load(HighScoreFile.Path);
@@ -41,13 +42,13 @@ namespace Game_2048.Models
                     .Elements(HighScoreFile.Root.Score.ElementName).First<XElement>();
 
                 XAttribute highScoreAttribute = scoreElement.Attribute(HighScoreFile.Root.Score.Attributes.HighScore);
-                int hightScore = int.Parse(highScoreAttribute.Value);
+                hightScore = int.Parse(highScoreAttribute.Value);
             }
             else 
             { 
                 throw new FileNotFoundException($"Not found file {HighScoreFile.Path}");
             }
-            return 0;
+            return hightScore;
         }
         private void SaveHighScore(int highScore)
         {
@@ -57,7 +58,8 @@ namespace Game_2048.Models
                 .Element(HighScoreFile.Root.ElementName)
                 .Elements(HighScoreFile.Root.Score.ElementName).First<XElement>();
 
-            XAttribute highScoreAttribute = scoreElement.Attribute(HighScoreFile.Root.Score.Attributes.HighScore);            int hightScore = int.Parse(highScoreAttribute.Value);
+            XAttribute highScoreAttribute = scoreElement.Attribute(HighScoreFile.Root.Score.Attributes.HighScore);            
+            int hightScore = int.Parse(highScoreAttribute.Value);
             highScoreAttribute.Value = highScore.ToString();
             document.Save(HighScoreFile.Path);
         }
@@ -72,7 +74,7 @@ namespace Game_2048.Models
                     scores.Score = value;
                     if(value>scores.HighScore)
                     {
-                        scores.HighScore = value;
+                        HighScore = value;
                     }
                     OnScoreChanged(EventArgs.Empty);
                 }

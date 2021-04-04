@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -22,7 +23,6 @@ namespace Game_2048.Models
             this.cols = cols;
             field = new List<int>(rows * cols);
             rand = new Random(DateTime.Now.Millisecond);
-            InitialGame();
         }
 
         public List<int> Field => field;
@@ -55,14 +55,14 @@ namespace Game_2048.Models
             }
             scores.Score = 0;
         }
-        public int GetCell(int row, int col) => field[row * rows + col * cols];
-        private void SetCell(int row, int col, int value) => field[row * rows + col * cols] = value;
-        private void GenerateNewBlock()
+        public int GetCell(int row, int col) => field[row * rows + col];
+        private void SetCell(int row, int col, int value) => field[row * rows + col] = value;
+        public void GenerateNewBlock()
         {
             int countFreeCell = GetCountFreeCell();
             if (countFreeCell > 0)
             {
-                int position = rand.Next(countFreeCell + 1);
+                int position = rand.Next(countFreeCell) + 1;
                 for (int i = 0; i < field.Count; i++)
                 {
                     if (field[i] == 0)
@@ -72,11 +72,13 @@ namespace Game_2048.Models
                         {
                             field[i] = rand.Next(10) == 0 ? 4 : 2;
                             OnFieldChanged(new PropertyChangedEventArgs(nameof(Field)));
+                            break;
                         }
                     }
                 }
             }
         }
+        private int GetCountFreeCell() => field.Count((int num) => num == 0);
         private void CheckWin()
         {
             if (field.Contains(2048))
@@ -120,7 +122,6 @@ namespace Game_2048.Models
                 OnIsNotMove(new PropertyChangedEventArgs(nameof(Field)));
             }
         }
-        private int GetCountFreeCell() => field.Count((int num) => num == 0);
 
         public bool MoveLeft()
         {
@@ -129,7 +130,7 @@ namespace Game_2048.Models
             {
                 for (int j = 0; j < cols - 1; j++)
                 {
-                    if (GetCell(i, j) == GetCell(i, j + 1))
+                    if (GetCell(i, j) == GetCell(i, j + 1) && GetCell(i, j) > 0)
                     {
                         SetCell(i, j, GetCell(i, j) * 2);
                         SetCell(i, j + 1, 0);
@@ -150,15 +151,18 @@ namespace Game_2048.Models
         private bool MoveNewCellLeft()
         {
             bool canExecute = false;
+            int k;
             for (int i = 0; i < rows; i++)
             {
-                for (int j = cols - 1; j > 0; j--)
+                for (int j = 1; j < cols; j++)
                 {
-                    if (GetCell(i, j) > 0 && GetCell(i, j - 1) == 0)
+                    k = j - 1;
+                    while (k >= 0 && GetCell(i, k) == 0 && GetCell(i, k + 1) > 0)
                     {
-                        SetCell(i, j - 1, GetCell(i, j));
-                        SetCell(i, j, 0);
+                        SetCell(i, k, GetCell(i, k + 1));
+                        SetCell(i, k + 1, 0);
                         canExecute = true;
+                        k--;
                     }
                 }
             }
@@ -171,7 +175,7 @@ namespace Game_2048.Models
             {
                 for (int j = cols - 1; j > 0; j--)
                 {
-                    if (GetCell(i, j) == GetCell(i, j - 1))
+                    if (GetCell(i, j) == GetCell(i, j - 1) && GetCell(i, j) > 0)
                     {
                         SetCell(i, j, GetCell(i, j) * 2);
                         SetCell(i, j - 1, 0);
@@ -192,15 +196,18 @@ namespace Game_2048.Models
         private bool MoveNewCellRight()
         {
             bool canExecute = false;
+            int k;
             for (int i = 0; i < rows; i++)
             {
-                for (int j = 0; j < cols - 1; j++)
+                for (int j = cols - 2; j >= 0; j--)
                 {
-                    if (GetCell(i, j) > 0 && GetCell(i, j + 1) == 0)
+                    k = j + 1;
+                    while (k < cols && GetCell(i, k) == 0 && GetCell(i, k - 1) > 0)
                     {
-                        SetCell(i, j + 1, GetCell(i, j));
-                        SetCell(i, j, 0);
+                        SetCell(i, k, GetCell(i, k - 1));
+                        SetCell(i, k - 1, 0);
                         canExecute = true;
+                        k++;
                     }
                 }
             }
@@ -213,7 +220,7 @@ namespace Game_2048.Models
             {
                 for (int j = 0; j < cols; j++)
                 {
-                    if (GetCell(i, j) == GetCell(i + 1, j))
+                    if (GetCell(i, j) == GetCell(i + 1, j) && GetCell(i, j) > 0)
                     {
                         SetCell(i, j, GetCell(i, j) * 2);
                         SetCell(i + 1, j, 0);
@@ -234,15 +241,18 @@ namespace Game_2048.Models
         private bool MoveNewCellUp()
         {
             bool canExecute = false;
-            for (int i = rows-1; i >0; i--)
+            int k;
+            for (int i = 1; i < rows; i++)
             {
                 for (int j = 0; j < cols; j++)
                 {
-                    if (GetCell(i, j) > 0 && GetCell(i - 1, j) == 0)
+                    k = i - 1;
+                    while (k >= 0 && GetCell(k, j) == 0 && GetCell(k + 1, j) > 0)
                     {
-                        SetCell(i - 1, j, GetCell(i, j));
-                        SetCell(i, j, 0);
+                        SetCell(k, j, GetCell(k + 1, j));
+                        SetCell(k + 1, j, 0);
                         canExecute = true;
+                        k--;
                     }
                 }
             }
@@ -255,7 +265,7 @@ namespace Game_2048.Models
             {
                 for (int j = 0; j < cols; j++)
                 {
-                    if (GetCell(i, j) == GetCell(i - 1, j))
+                    if (GetCell(i, j) == GetCell(i - 1, j) && GetCell(i, j) > 0)
                     {
                         SetCell(i, j, GetCell(i, j) * 2);
                         SetCell(i - 1, j, 0);
@@ -276,15 +286,18 @@ namespace Game_2048.Models
         private bool MoveNewCellDown()
         {
             bool canExecute = false;
-            for (int i = 0; i < rows - 1; i++)
+            int k;
+            for (int i = rows - 2; i >= 0; i--)
             {
                 for (int j = 0; j < cols; j++)
                 {
-                    if (GetCell(i, j) > 0 && GetCell(i + 1, j) == 0)
+                    k = i + 1;
+                    while (k < rows && GetCell(k, j) == 0 && GetCell(k - 1, j) > 0)
                     {
-                        SetCell(i + 1, j, GetCell(i, j));
-                        SetCell(i, j, 0);
+                        SetCell(k, j, GetCell(k - 1, j));
+                        SetCell(k - 1, j, 0);
                         canExecute = true;
+                        k++;
                     }
                 }
             }
