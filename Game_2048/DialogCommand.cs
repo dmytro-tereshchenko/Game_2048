@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Game_2048
 {
@@ -15,8 +11,7 @@ namespace Game_2048
 
         public DialogCommand(Action<object> executeMethod) :
             this(executeMethod, defaultCanExecuteMethod)
-        {
-        }
+        { }
 
         public DialogCommand(Action<object> executeMethod, Func<bool> canExecuteMethod)
         {
@@ -24,18 +19,9 @@ namespace Game_2048
             this.executeMethod = executeMethod;
         }
 
-        public override bool CanExecute()
-        {
-            return canExecuteMethod();
-        }
+        public override bool CanExecute() => canExecuteMethod();
 
-        public override void Execute(object parameter)
-        {
-            executeMethod(parameter);
-        }
-        public override void Execute()
-        {
-            
-        }
+        public override void Execute(object parameter) => executeMethod(parameter);
+        public override void Execute() { }
     }
 }

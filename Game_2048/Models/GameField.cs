@@ -143,7 +143,7 @@ namespace Game_2048.Models
                 CheckIsNotMove();
             }
         }
-        private bool MoveNewCellLeft()
+        protected virtual bool MoveNewCellLeft()
         {
             bool canExecute = false;
             int k;
@@ -187,7 +187,7 @@ namespace Game_2048.Models
                 CheckIsNotMove();
             }
         }
-        private bool MoveNewCellRight()
+        protected virtual bool MoveNewCellRight()
         {
             bool canExecute = false;
             int k;
@@ -231,7 +231,7 @@ namespace Game_2048.Models
                 CheckIsNotMove();
             }
         }
-        private bool MoveNewCellUp()
+        protected virtual bool MoveNewCellUp()
         {
             bool canExecute = false;
             int k;
@@ -275,7 +275,7 @@ namespace Game_2048.Models
                 CheckIsNotMove();
             }
         }
-        private bool MoveNewCellDown()
+        protected virtual bool MoveNewCellDown()
         {
             bool canExecute = false;
             int k;

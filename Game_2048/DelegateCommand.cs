@@ -11,8 +11,7 @@ namespace Game_2048
 
         public DelegateCommand(Action executeMethod) :
             this(executeMethod, defaultCanExecuteMethod)
-        {
-        }
+        { }
 
         public DelegateCommand(Action executeMethod, Func<bool> canExecuteMethod)
         {
@@ -20,18 +19,9 @@ namespace Game_2048
             this.executeMethod = executeMethod;
         }
 
-        public override bool CanExecute()
-        {
-            return canExecuteMethod();
-        }
+        public override bool CanExecute() => canExecuteMethod();
 
-        public override void Execute()
-        {
-            executeMethod();
-        }
-        public override void Execute(object parameter)
-        {
-            
-        }
+        public override void Execute() => executeMethod();
+        public override void Execute(object parameter) { }
     }
 }
