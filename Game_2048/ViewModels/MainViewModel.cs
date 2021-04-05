@@ -46,7 +46,7 @@ namespace Game_2048.ViewModels
         public string Score => gameScore.Score.ToString();
         public string HighScore => gameScore.HighScore.ToString();
         public List<string> Bar => gameField.Field.ConvertAll((int i) =>
-        (i.ToString()).Equals("0") ? string.Empty : i.ToString());
+        i.Equals(0) ? string.Empty : i.ToString());
         private void MoveRight() => gameField.MoveRight();
         private void MoveLeft() => gameField.MoveLeft();
         private void MoveUp() => gameField.MoveUp();
