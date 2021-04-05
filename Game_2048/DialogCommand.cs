@@ -1,20 +1,24 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Game_2048
 {
-    internal sealed class DelegateCommand : Command
+    internal sealed class DialogCommand : Command
     {
         private static readonly Func<bool> defaultCanExecuteMethod = () => true;
 
         private Func<bool> canExecuteMethod;
-        private readonly Action executeMethod;
+        private readonly Action<object> executeMethod;
 
-        public DelegateCommand(Action executeMethod) :
+        public DialogCommand(Action<object> executeMethod) :
             this(executeMethod, defaultCanExecuteMethod)
         {
         }
 
-        public DelegateCommand(Action executeMethod, Func<bool> canExecuteMethod)
+        public DialogCommand(Action<object> executeMethod, Func<bool> canExecuteMethod)
         {
             this.canExecuteMethod = canExecuteMethod;
             this.executeMethod = executeMethod;
@@ -25,11 +29,11 @@ namespace Game_2048
             return canExecuteMethod();
         }
 
-        public override void Execute()
-        {
-            executeMethod();
-        }
         public override void Execute(object parameter)
+        {
+            executeMethod(parameter);
+        }
+        public override void Execute()
         {
             
         }

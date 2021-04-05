@@ -13,6 +13,7 @@ namespace Game_2048
         }
 
         public abstract void Execute();
+        public abstract void Execute(object parameter);
 
         protected virtual void OnCanExecuteChanged(EventArgs e)
         {
@@ -32,6 +33,7 @@ namespace Game_2048
         void ICommand.Execute(object parameter)
         {
             Execute();
+            Execute(parameter);
         }
     }
 }
