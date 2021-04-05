@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.IO;
 using System.ComponentModel;
 
 namespace Game_2048.Models
 {
-    internal sealed class GameScoreManager
+    internal sealed class GameScoreManager : IGameScoreManager
     {
-        private GameScore scores;
+        private IGameScore scores;
 
         public GameScoreManager()
         {
@@ -20,15 +17,11 @@ namespace Game_2048.Models
             scores.HighScoreChanged += Scores_HighScoreChanged;
         }
 
-        private void Scores_HighScoreChanged(object sender, EventArgs e)
-        {
+        private void Scores_HighScoreChanged(object sender, EventArgs e) =>
             OnHighScoreChanged(new PropertyChangedEventArgs(nameof(HighScore)));
-        }
 
-        private void Scores_ScoreChanged(object sender, EventArgs e)
-        {
+        private void Scores_ScoreChanged(object sender, EventArgs e) =>
             OnScoreChanged(new PropertyChangedEventArgs(nameof(Score)));
-        }
 
         private int LoadHighScore()
         {
@@ -44,8 +37,8 @@ namespace Game_2048.Models
                 XAttribute highScoreAttribute = scoreElement.Attribute(HighScoreFile.Root.Score.Attributes.HighScore);
                 hightScore = int.Parse(highScoreAttribute.Value);
             }
-            else 
-            { 
+            else
+            {
                 throw new FileNotFoundException($"Not found file {HighScoreFile.Path}");
             }
             return hightScore;
@@ -58,7 +51,7 @@ namespace Game_2048.Models
                 .Element(HighScoreFile.Root.ElementName)
                 .Elements(HighScoreFile.Root.Score.ElementName).First<XElement>();
 
-            XAttribute highScoreAttribute = scoreElement.Attribute(HighScoreFile.Root.Score.Attributes.HighScore);            
+            XAttribute highScoreAttribute = scoreElement.Attribute(HighScoreFile.Root.Score.Attributes.HighScore);
             int hightScore = int.Parse(highScoreAttribute.Value);
             highScoreAttribute.Value = highScore.ToString();
             document.Save(HighScoreFile.Path);
@@ -72,7 +65,7 @@ namespace Game_2048.Models
                 if (!scores.Score.Equals(value) && value >= 0)
                 {
                     scores.Score = value;
-                    if(value>scores.HighScore)
+                    if (value > scores.HighScore)
                     {
                         HighScore = value;
                     }
@@ -100,13 +93,7 @@ namespace Game_2048.Models
         public event EventHandler<EventArgs> ScoreChanged;
         public event EventHandler<EventArgs> HighScoreChanged;
 
-        private void OnScoreChanged(EventArgs e)
-        {
-            ScoreChanged?.Invoke(this, e);
-        }
-        private void OnHighScoreChanged(EventArgs e)
-        {
-            HighScoreChanged?.Invoke(this, e);
-        }
+        private void OnScoreChanged(EventArgs e) => ScoreChanged?.Invoke(this, e);
+        private void OnHighScoreChanged(EventArgs e) => HighScoreChanged?.Invoke(this, e);
     }
 }

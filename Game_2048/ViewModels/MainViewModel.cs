@@ -1,91 +1,66 @@
 ﻿using Game_2048.Models;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Input;
 
 namespace Game_2048.ViewModels
 {
-    internal class MainViewModel : INotifyPropertyChanged
+    internal class MainViewModel : ViewModel<MainViewModel>
     {
-        private GameField gameField;
-        private GameScoreManager gameScore;
-        private Command moveBarRight;
-        private Command moveBarLeft;
-        private Command moveBarUp;
-        private Command moveBarDown;
-        private Command startGame;
-        public MainViewModel(GameField gameField, GameScoreManager gameScore)
+        private IGameField gameField;
+        private IGameScoreManager gameScore;
+        private ICommand moveBarRight;
+        private ICommand moveBarLeft;
+        private ICommand moveBarUp;
+        private ICommand moveBarDown;
+        private ICommand startGame;
+        private INewViewFactory newViewFactory;
+        public MainViewModel(IGameField gameField, IGameScoreManager gameScore, INewViewFactory newViewFactory)
         {
             this.gameField = gameField;
             this.gameScore = gameScore;
-            moveBarRight = new DelegateCommand(MoveRight);
-            moveBarLeft = new DelegateCommand(MoveLeft);
-            moveBarUp = new DelegateCommand(MoveUp);
-            moveBarDown = new DelegateCommand(MoveDown);
+            this.newViewFactory = newViewFactory;
+            moveBarRight = new DelegateCommand(MoveRight, () => !gameField.IsNotMove && !gameField.IsWinGame);
+            moveBarLeft = new DelegateCommand(MoveLeft, () => !gameField.IsNotMove && !gameField.IsWinGame);
+            moveBarUp = new DelegateCommand(MoveUp, () => !gameField.IsNotMove && !gameField.IsWinGame);
+            moveBarDown = new DelegateCommand(MoveDown, () => !gameField.IsNotMove && !gameField.IsWinGame);
             startGame = new DelegateCommand(InitialGame);
             gameScore.ScoreChanged += GameScore_ScoreChanged;
             gameScore.HighScoreChanged += GameScore_HighScoreChanged;
             gameField.FieldChanged += GameField_FieldChanged;
+            gameField.NotMove += GameField_NotMove;
+            gameField.WinGame += GameField_WinGame;
         }
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected virtual void OnPropertyChanged(PropertyChangedEventArgs e)
-        {
-            PropertyChanged?.Invoke(this, e);
-        }
-        public Command MoveBarRight => moveBarRight;
-        public Command MoveBarLeft => moveBarLeft;
-        public Command MoveBarUp => moveBarUp;
-        public Command MoveBarDown => moveBarDown;
-        public Command StartGame => startGame;
-        public string Score { get => gameScore.Score.ToString(); }
-        public string HighScore { get => gameScore.HighScore.ToString(); }
-        public List<string> Bar { get => gameField.Field.ConvertAll((int i) => (i.ToString()).Equals("0") ? string.Empty : i.ToString()); }
-        private void MoveRight()
-        {
-            gameField.MoveRight();
-        }
-        private void MoveLeft()
-        {
-            gameField.MoveLeft();
-        }
-        private void MoveUp()
-        {
-            gameField.MoveUp();
-        }
-        private void MoveDown()
-        {
-            gameField.MoveDown();
-        }
+
+        private void GameField_WinGame(object sender, EventArgs e) =>
+            newViewFactory.CreateNewView(gameField, "You are win!!!");
+
+        private void GameField_NotMove(object sender, EventArgs e) =>
+            newViewFactory.CreateNewView(gameField, "You are lose!!!");
+        public ICommand MoveBarRight => moveBarRight;
+        public ICommand MoveBarLeft => moveBarLeft;
+        public ICommand MoveBarUp => moveBarUp;
+        public ICommand MoveBarDown => moveBarDown;
+        public ICommand StartGame => startGame;
+        public string Score => gameScore.Score.ToString();
+        public string HighScore => gameScore.HighScore.ToString();
+        public List<string> Bar => gameField.Field.ConvertAll((int i) =>
+        (i.ToString()).Equals("0") ? string.Empty : i.ToString());
+        private void MoveRight() => gameField.MoveRight();
+        private void MoveLeft() => gameField.MoveLeft();
+        private void MoveUp() => gameField.MoveUp();
+        private void MoveDown() => gameField.MoveDown();
         private void InitialGame()
         {
             gameField.InitialGame();
             gameField.GenerateNewBlock();
         }
-        private void GameScore_ScoreChanged(object sender, EventArgs e)
-        {
+        private void GameScore_ScoreChanged(object sender, EventArgs e) =>
             OnPropertyChanged(new PropertyChangedEventArgs(nameof(Score)));
-        }
-        private void GameScore_HighScoreChanged(object sender, EventArgs e)
-        {
+        private void GameScore_HighScoreChanged(object sender, EventArgs e) =>
             OnPropertyChanged(new PropertyChangedEventArgs(nameof(HighScore)));
-        }
-        private void GameField_FieldChanged(object sender, EventArgs e)
-        {
+        private void GameField_FieldChanged(object sender, EventArgs e) =>
             OnPropertyChanged(new PropertyChangedEventArgs(nameof(Bar)));
-        }
-        protected void SetProperty<T>(ref T oldValue, T newValue, [CallerMemberName] string propertyName = null)
-        {
-            if (!oldValue?.Equals(newValue) ?? newValue != null)
-            {
-                oldValue = newValue;
-
-                OnPropertyChanged(new PropertyChangedEventArgs(propertyName));
-            }
-        }
     }
 }

@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Game_2048.Models
 {
-    internal class GameField
+    internal class GameField : IGameField
     {
         private int rows;
         private int cols;
-        private GameScoreManager scores;
+        private IGameScoreManager scores;
         private List<int> field;
         private Random rand;
+        private bool isNotMove;
+        private bool isWinGame;
 
-        public GameField(GameScoreManager gameScoreManager, int rows, int cols)
+        public GameField(IGameScoreManager gameScoreManager, int rows, int cols)
         {
             scores = gameScoreManager;
             this.rows = rows;
@@ -28,25 +27,18 @@ namespace Game_2048.Models
         public List<int> Field => field;
         public int Rows => rows;
         public int Cols => cols;
+        public bool IsNotMove => isNotMove;
+        public bool IsWinGame => isWinGame;
 
         public event EventHandler<EventArgs> FieldChanged;
-        public event EventHandler<EventArgs> IsNotMove;
+        public event EventHandler<EventArgs> NotMove;
         public event EventHandler<EventArgs> WinGame;
 
-        private void OnFieldChanged(EventArgs e)
-        {
-            FieldChanged?.Invoke(this, e);
-        }
-        private void OnIsNotMove(EventArgs e)
-        {
-            IsNotMove?.Invoke(this, e);
-        }
-        private void OnWinGame(EventArgs e)
-        {
-            WinGame?.Invoke(this, e);
-        }
+        private void OnFieldChanged(EventArgs e) => FieldChanged?.Invoke(this, e);
+        private void OnIsNotMove(EventArgs e) => NotMove?.Invoke(this, e);
+        private void OnWinGame(EventArgs e) => WinGame?.Invoke(this, e);
 
-        public void InitialGame()
+        public virtual void InitialGame()
         {
             field.Clear();
             for(int i = 0; i < rows * cols; i++)
@@ -54,10 +46,13 @@ namespace Game_2048.Models
                 field.Add(0);
             }
             scores.Score = 0;
+            isNotMove = false;
+            isWinGame = false;
         }
-        public int GetCell(int row, int col) => field[row * rows + col];
+        public virtual void ContinueGame() => isWinGame = false;
+        public virtual int GetCell(int row, int col) => field[row * rows + col];
         private void SetCell(int row, int col, int value) => field[row * rows + col] = value;
-        public void GenerateNewBlock()
+        public virtual void GenerateNewBlock()
         {
             int countFreeCell = GetCountFreeCell();
             if (countFreeCell > 0)
@@ -83,6 +78,7 @@ namespace Game_2048.Models
         {
             if (field.Contains(2048))
             {
+                isWinGame = true;
                 OnWinGame(new PropertyChangedEventArgs(nameof(Field)));
             }
         }
@@ -119,11 +115,11 @@ namespace Game_2048.Models
             }
             if (!canNextRound)
             {
+                isNotMove = true;
                 OnIsNotMove(new PropertyChangedEventArgs(nameof(Field)));
             }
         }
-
-        public bool MoveLeft()
+        public virtual void MoveLeft()
         {
             bool canExecute = MoveNewCellLeft();
             for (int i = 0; i < rows; i++)
@@ -146,7 +142,6 @@ namespace Game_2048.Models
                 CheckWin();
                 CheckIsNotMove();
             }
-            return canExecute;
         }
         private bool MoveNewCellLeft()
         {
@@ -168,7 +163,7 @@ namespace Game_2048.Models
             }
             return canExecute;
         }
-        public bool MoveRight()
+        public virtual void MoveRight()
         {
             bool canExecute = MoveNewCellRight();
             for (int i = 0; i < rows; i++)
@@ -191,7 +186,6 @@ namespace Game_2048.Models
                 CheckWin();
                 CheckIsNotMove();
             }
-            return canExecute;
         }
         private bool MoveNewCellRight()
         {
@@ -213,7 +207,7 @@ namespace Game_2048.Models
             }
             return canExecute;
         }
-        public bool MoveUp()
+        public virtual void MoveUp()
         {
             bool canExecute = MoveNewCellUp();
             for (int i = 0; i < rows - 1; i++)
@@ -236,7 +230,6 @@ namespace Game_2048.Models
                 CheckWin();
                 CheckIsNotMove();
             }
-            return canExecute;
         }
         private bool MoveNewCellUp()
         {
@@ -258,7 +251,7 @@ namespace Game_2048.Models
             }
             return canExecute;
         }
-        public bool MoveDown()
+        public virtual void MoveDown()
         {
             bool canExecute = MoveNewCellDown();
             for (int i = rows - 1; i > 0; i--)
@@ -281,7 +274,6 @@ namespace Game_2048.Models
                 CheckWin();
                 CheckIsNotMove();
             }
-            return canExecute;
         }
         private bool MoveNewCellDown()
         {

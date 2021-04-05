@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Game_2048.Models
 {
-    internal sealed class GameScore
+    internal class GameScore : IGameScore
     {
         private int highScore;
         private int score;
@@ -47,13 +43,8 @@ namespace Game_2048.Models
         public event EventHandler<EventArgs> ScoreChanged;
         public event EventHandler<EventArgs> HighScoreChanged;
 
-        private void OnScoreChanged(EventArgs e)
-        {
-            ScoreChanged?.Invoke(this, e);
-        }
-        private void OnHighScoreChanged(EventArgs e)
-        {
-            HighScoreChanged?.Invoke(this, e);
-        }
+        private void OnScoreChanged(EventArgs e) => ScoreChanged?.Invoke(this, e);
+
+        private void OnHighScoreChanged(EventArgs e) => HighScoreChanged?.Invoke(this, e);
     }
 }

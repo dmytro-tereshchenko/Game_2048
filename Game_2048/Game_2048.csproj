@@ -61,6 +61,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Views\EndGameView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -71,15 +75,33 @@
     </Compile>
     <Compile Include="Command.cs" />
     <Compile Include="DelegateCommand.cs" />
+    <Compile Include="DialogCommand.cs" />
+    <Compile Include="DirectorGameBuilder.cs" />
+    <Compile Include="GameBuilder.cs" />
+    <Compile Include="Models\IGameField.cs" />
+    <Compile Include="Models\IGameScore.cs" />
     <Compile Include="Models\GameField.cs" />
     <Compile Include="Models\GameScore.cs" />
     <Compile Include="Models\GameScoreManager.cs" />
     <Compile Include="Models\HighScoreFile.cs" />
+    <Compile Include="Models\IGameScoreManager.cs" />
+    <Compile Include="ViewModels\EndGameViewModel.cs" />
+    <Compile Include="ViewModels\INewViewFactory.cs" />
+    <Compile Include="ViewModels\IViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\ProductionEndGameWindowFactory.cs" />
+    <Compile Include="ViewModels\ViewModel.cs" />
+    <Compile Include="Views\EndGameView.xaml.cs">
+      <DependentUpon>EndGameView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainView.xaml.cs">
       <DependentUpon>MainView.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\StylesGame_2048.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

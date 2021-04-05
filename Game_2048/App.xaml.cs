@@ -1,13 +1,4 @@
-﻿using Game_2048.Models;
-using Game_2048.ViewModels;
-using Game_2048.Views;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 
 namespace Game_2048
 {
@@ -20,10 +11,8 @@ namespace Game_2048
         {
             base.OnStartup(e);
 
-            var gameScoreManager = new GameScoreManager();
-            var gameField = new GameField(gameScoreManager, 4, 4);
-            MainViewModel viewModel = new MainViewModel(gameField, gameScoreManager);
-            var view = new MainView(viewModel);
+            DirectorGameBuilder director = new DirectorGameBuilder();
+            var view = director.Construct(new GameBuilder());
             view.Show();
         }
     }
